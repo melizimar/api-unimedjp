@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  java:
+    image: openjdk:21-jdk
+    container_name: java-container
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./app:/usr/app 
+    working_dir: /usr/app
+    command: ["java", "-jar", "api-unimedjp.jar"]
+    depends_on:
+      - postgres
+      - minio
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/db
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=password
+
+  postgres:
+    image: postgres:15
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  minio:
+    image: minio/minio
+    container_name: minio-container
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+    command: server /data
+    volumes:
+      - minio_data:/data
+
+volumes:
+  postgres_data:
+    driver: local
+  minio_data:
+    driver: local
