@@ -19,7 +19,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=password
 
   postgres:
-    image: postgres:15
+    image: postgres:latest
     container_name: postgres-container
     environment:
       POSTGRES_USER: postgres
@@ -35,6 +35,7 @@ services:
     container_name: minio-container
     ports:
       - "9000:9000"
+      - "9001":9001
     environment:
       MINIO_ACCESS_KEY: minioadmin
       MINIO_SECRET_KEY: minioadmin
