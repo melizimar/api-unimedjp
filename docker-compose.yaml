@@ -35,13 +35,13 @@ services:
     container_name: minio-container
     ports:
       - "9000:9000"
-      - "9001":9001
+      - "9001:9001"
     environment:
-      MINIO_ACCESS_KEY: minioadmin
-      MINIO_SECRET_KEY: minioadmin
-    command: server /data
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin1234
+    command: server --console-address ":9001" /data
     volumes:
-      - minio_data:/data
+      - ./minio_data:/data
 
 volumes:
   postgres_data:
